@@ -1,0 +1,55 @@
+name: Wine Quality Training
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run training
+      run: |
+        python train.py
+
+    - name: Read metrics
+      id: metrics
+      run: |
+        echo "METRICS<<EOF" >> $GITHUB_ENV
+        cat output/results/metrics.json >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
+
+    - name: Job Summary
+      run: |
+        echo "## Lab 2 – ML Experiment Report" >> $GITHUB_STEP_SUMMARY
+        echo "**Name:** Manoj Kumar" >> $GITHUB_STEP_SUMMARY
+        echo "**Roll No:** 2022BCS0184" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Evaluation Metrics" >> $GITHUB_STEP_SUMMARY
+        echo '```json' >> $GITHUB_STEP_SUMMARY
+        cat output/results/metrics.json >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: lab2-artifacts
+        path: |
+          output/model/model.pkl
+          output/results/metrics.json
