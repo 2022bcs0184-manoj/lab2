@@ -28,12 +28,6 @@ jobs:
       run: |
         python train.py
 
-    - name: Read metrics
-      id: metrics
-      run: |
-        echo "METRICS<<EOF" >> $GITHUB_ENV
-        cat output/results/metrics.json >> $GITHUB_ENV
-        echo "EOF" >> $GITHUB_ENV
 
     - name: Job Summary
       run: |
