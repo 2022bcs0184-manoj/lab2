@@ -23,7 +23,7 @@ X = df.drop("quality", axis=1)
 y = df["quality"]
 
 # Preprocessing
-x_scaled = X.values
+X_scaled = X.values
 
 # Train-test split
 X_train, X_test, y_train, y_test = train_test_split(
