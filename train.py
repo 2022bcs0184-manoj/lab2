@@ -2,7 +2,6 @@ import pandas as pd
 import json
 import os
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import Lasso
 from sklearn.metrics import mean_squared_error, r2_score
 import joblib
@@ -22,12 +21,12 @@ df = pd.read_csv(DATA_PATH, sep=";")
 X = df.drop("quality", axis=1)
 y = df["quality"]
 
-# Preprocessing
+# Preprocessing (NO scaling)
 X_scaled = X.values
 
-# Train-test split
+# Train-test split (CHANGED to 0.3)
 X_train, X_test, y_train, y_test = train_test_split(
-    X_scaled, y, test_size=0.2, random_state=42
+    X_scaled, y, test_size=0.3, random_state=42
 )
 
 # Model
